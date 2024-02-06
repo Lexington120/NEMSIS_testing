@@ -604,7 +604,8 @@
   </wsdl:binding>
   <wsdl:service name="NemsisWsService">
     <wsdl:port binding="tns:NemsisWsPortTypeSoap11" name="NemsisWsPortTypeSoap11">
-      <soap:address location="https://compliance.nemsis.org/"/>
+      <!-- <soap:address location="https://compliance.nemsis.org/"/> -->
+      <soap:address location="https://validator.nemsis.org/"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+    <serverErrorReport>None</serverErrorReport>
+    <_xmlValidationErrorReport>
+        <totalErrorCount>0</totalErrorCount>
+        <_xmlError></_xmlError>
+    </_xmlValidationErrorReport>
+    <schematronReport>
+        <completeSchematronReport>
+            <completeReport>
+                <payloadOfXmlElement>
+                    <_value_1></_value_1>
+                </payloadOfXmlElement>
+            </completeReport>
+        </completeSchematronReport>
+    </schematronReport>
+    <customReport></customReport>
+</root>
