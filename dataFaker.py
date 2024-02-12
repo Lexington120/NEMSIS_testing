@@ -15,11 +15,11 @@ def main():
 
     try:
         # connection = create_connection()
-        connection = create_connection()
+        connection = create_connection_AWS()
         cursor = connection.cursor()
 
-        create_database_query = "CREATE DATABASE IF NOT EXISTS cadmus_db"
-        cursor.execute(create_database_query)
+        # create_database_query = "CREATE DATABASE IF NOT EXISTS cadmus_db"
+        # cursor.execute(create_database_query)
 
         # Generate n agencies with m medics with o reports each
         for _ in range(3):
@@ -58,7 +58,7 @@ def create_connection():
     )
 
 
-# Function to create a connection to the MySQL database
+# Function to create a connection to AWS MySQL database
 def create_connection_AWS():
     return mysql.connector.connect(
         host="cadmusdbtest.csaevtj8flgb.us-east-1.rds.amazonaws.com",
@@ -137,6 +137,7 @@ def generateReport(cursor,medic_uid):
         fake.random_int(),                  # dispatch_priority
         fake.date_time(),                   # call_time
         fake.date_time(),                   # unit_notified
+        fake.date_time(),                   # dispatch_time
         fake.date_time(),                   # dispatch_ack
         fake.date_time(),                   # unit_on_route
         fake.date_time(),                   # unit_arrived_on_scene
@@ -151,8 +152,8 @@ def generateReport(cursor,medic_uid):
         fake.date_time(),                   # unit_home
         fake.date_time(),                   # ems_call_completed
         fake.date_time(),                   # arrival_at_staging
-        fake.random_int() % 2,                  # pcs
-        fake.random_int() % 2,                  # pcs_signed
+        fake.random_int() % 2,              # pcs
+        fake.random_int() % 2,              # pcs_signed
         fake.pyfloat(),                     # milage_to_closest_hospital
         fake.random_int(),                  # num_patients_at_scene
         # f"POINT({fake.longitude()} {fake.latitude()})",  # scene_gps_location
@@ -206,7 +207,7 @@ def generateReport(cursor,medic_uid):
         fake.random_int() % 2,              # pain_scale_test
         fake.random_int() % 2,              # ecg_recorded_output_test
         fake.random_int() % 2,              # narrative_exists
-        medic_uid                           # medics_uid
+        medic_uid                           # medics_medic_uid
     )
 
     cursor.execute("""
@@ -221,6 +222,7 @@ def generateReport(cursor,medic_uid):
             dispatch_priority,
             call_time,
             unit_notified,
+            dispatch_time,
             dispatch_ack,
             unit_on_route,
             unit_arrived_on_scene,
@@ -261,11 +263,11 @@ def generateReport(cursor,medic_uid):
             dispatch_to_end_odom,
             on_scene_to_end_odom,
             call_notified_time,
+            scene_to_patient_time,
+            total_on_scene_time,
             notified_to_en_route_time,
             driving_time,
             notified_to_complete_time,
-            scene_to_patient_time,
-            total_on_scene_time,
             patient_to_destination_time,
             care_by_crew_time,
             recovery_time,
@@ -284,14 +286,14 @@ def generateReport(cursor,medic_uid):
             pcs_symptom_test,
             pcs_impression_test,
             failed_to_resuscitate_test,
-            medical_history_test, #
+            medical_history_test,
             medication_history_test,
             two_sets_vitals_test,
             pain_scale_test,
             ecg_recorded_output_test,
             narrative_exists,
-            medics_uid
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            medics_medic_uid
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, report_data)
 
     return report_data
